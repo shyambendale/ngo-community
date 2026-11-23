@@ -1,6 +1,8 @@
 # NGO Community App
 
-A comprehensive web application built with React.js and Bootstrap for connecting NGOs with communities and managing requirements.
+A web application that connects NGOs with communities, helping people discover NGOs, explore community needs, and coordinate support.
+
+**Live application:** https://bucolic-kataifi-d21d7c.netlify.app\
 
 ## 🚀 Features
 
@@ -12,112 +14,238 @@ A comprehensive web application built with React.js and Bootstrap for connecting
 - **Messaging System**: Direct communication between users and NGOs
 - **Admin Dashboard**: Comprehensive administration panel
 
-### Technical Features
-- **React.js 19**: Modern React with hooks and functional components
-- **Redux Toolkit**: State management with async thunks
-- **React Router**: Client-side routing with protected routes
-- **Bootstrap 5**: Responsive UI components and styling
-- **Axios**: HTTP client for API communication
-- **Custom Hooks**: Reusable authentication and data management hooks
-
 ## 🛠️ Tech Stack
 
-- **Frontend**: React.js 19, Bootstrap 5, Redux Toolkit
-- **Backend**: Firebase Functions (Node.js/Express)
-- **Database**: Firestore
-- **Authentication**: Custom auth system with localStorage
-- **Deployment**: Vite build system
+### Frontend
+
+-   React
+-   Vite
+-   Bootstrap
+-   Axios
+-   Redux
+
+### Backend
+
+-   Node.js
+-   Express.js
+-   MongoDB with Mongoose
+-   JSON Web Tokens (JWT)
+-   bcryptjs
 
 ## 📁 Project Structure
 
 ```
-src/
-├── api/                    # API service files
-│   ├── auth.js            # Authentication APIs
-│   ├── ngo.js             # NGO management APIs
-│   ├── requirements.js     # Requirements APIs
-│   ├── messages.js        # Messaging APIs
-│   └── index.js           # API exports
-├── components/            # Reusable UI components
-│   ├── Navbar.jsx         # Navigation component
-│   ├── Footer.jsx         # Footer component
-│   ├── ProtectedRoute.jsx # Route protection
-│   └── CustomLink.jsx     # Custom navigation links
-├── context/               # React Context
-│   └── AuthContext.jsx    # Authentication context
-├── hooks/                 # Custom hooks
-│   └── useAuth.js         # Authentication hook
-├── pages/                 # Page components
-│   ├── Home.jsx           # Landing page
-│   ├── Login.jsx          # User login
-│   ├── Register.jsx       # User registration
-│   ├── NgoRegister.jsx    # NGO registration
-│   ├── Search.jsx         # NGO search
-│   ├── Requirements.jsx   # Requirements management
-│   ├── Messages.jsx       # Messaging system
-│   └── AdminDashboard.jsx # Admin panel
-├── redux/                 # Redux store and slices
-│   ├── store.js           # Redux store configuration
-│   ├── authSlice.js       # Authentication state
-│   ├── ngoSlice.js        # NGO state management
-│   └── requirementSlice.js # Requirements state
-├── styles/                # Custom CSS
-│   └── custom.css         # Enhanced styling
-├── App.jsx                # Main app component
-├── main.jsx               # Entry point
-└── config.js              # Configuration constants
+ngo-community/
+├── public/
+├── src/
+│   ├── api/
+│   ├── assets/
+│   ├── components/
+│   ├── context/
+│   ├── hooks/
+│   ├── pages/
+│   ├── redux/
+│   ├── styles/
+│   ├── server/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── server.js
+│   │   └── package.json
+│   ├── App.jsx
+│   ├── config.js
+│   └── main.jsx
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
 ```
 
-## 🚀 Getting Started
+## Run Locally
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn package manager
 
-### Installation
+-   Node.js and npm
+-   A MongoDB database (MongoDB Atlas or a local MongoDB instance)
+-   Git
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd ngo-community-app
-   ```
+### 1. Clone the repository
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment**
-   - Update `src/config.js` with your API endpoints
-   - Ensure your backend is running and accessible
-
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to `http://localhost:5173`
-
-### Building for Production
-
-```bash
-npm run build
+``` bash
+git clone https://github.com/shyambendale/ngo-community.git
+cd ngo-community
 ```
 
-The built files will be in the `dist/` directory.
+### 2. Install frontend dependencies
 
-## 🔧 Configuration
+Run this from the repository root:
 
-### API Configuration
-Update `src/config.js` with your backend API URL:
-
-```javascript
-export const API_BASE_URL = 'https://your-api-endpoint.com';
+``` bash
+npm install
 ```
 
-### Backend Integration
-This frontend is designed to work with the provided Firebase Functions backend. Ensure your backend is deployed and accessible.
+### 3. Configure the backend
+
+Go to the backend directory:
+
+``` bash
+cd src/server
+npm install
+```
+
+Create a `.env` file inside `src/server/`:
+
+``` env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_long_random_secret
+CLIENT_URL=http://localhost:5173
+```
+
+Optional administrator bootstrap variables:
+
+``` env
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=use_a_strong_unique_password
+```
+
+The backend creates an administrator account when both `ADMIN_EMAIL` and
+`ADMIN_PASSWORD` are configured and that email does not already exist.
+
+**Important:** Replace all example values with your own. Never commit
+`.env`, database credentials, JWT secrets, or administrator passwords to
+GitHub. The backend reads `MONGO_URI` (not `MONGODB_URI`).
+
+### 4. Start the backend
+
+From `src/server/`:
+
+``` bash
+npm run dev
+```
+
+The backend uses port `5000` by default. You can check that it is
+running by opening:
+
+``` text
+http://localhost:5000/
+```
+
+Expected response:
+
+``` json
+{
+  "status": "NGO API running"
+}
+```
+
+### 5. Configure the frontend API URL
+
+Create a `.env` file in the repository root:
+
+``` env
+VITE_API_URL=http://localhost:5000
+```
+
+The frontend uses this value to connect to the backend. If it is not
+set, the current frontend configuration falls back to
+`http://localhost:5000`.
+
+### 6. Start the frontend
+
+Open a second terminal at the repository root and run:
+
+``` bash
+npm run dev
+```
+
+Open the local URL printed by Vite, usually:
+
+``` text
+http://localhost:5173
+```
+
+## Environment Variables
+
+### Backend (`src/server/.env`)
+
+  -----------------------------------------------------------------------
+  Variable                Required                Purpose
+  ----------------------- ----------------------- -----------------------
+  `MONGO_URI`             Yes                     MongoDB connection
+                                                  string
+
+  `JWT_SECRET`            Yes                     Secret used to sign and
+                                                  verify JWTs
+
+  `PORT`                  No                      Backend port; defaults
+                                                  to `5000`
+
+  `CLIENT_URL`            Recommended             Allowed frontend
+                                                  origin(s) for CORS;
+                                                  comma-separated values
+                                                  are supported
+
+  `ADMIN_EMAIL`           No                      Email for initial
+                                                  administrator account
+                                                  creation
+
+  `ADMIN_PASSWORD`        No                      Password for initial
+                                                  administrator account
+                                                  creation
+  -----------------------------------------------------------------------
+
+### Frontend (root `.env`)
+
+  Variable         Required      Purpose
+  ---------------- ------------- -----------------------------
+  `VITE_API_URL`   Recommended   Base URL of the backend API
+
+Do not put private credentials in variables prefixed with `VITE_`;
+frontend variables are exposed to the browser.
+
+## Deployment
+
+This project is deployed with the frontend and backend as separate
+services.
+
+### Frontend --- Netlify
+
+-   Repository: `shyambendale/ngo-community`
+-   Branch: `main`
+-   Base directory: leave blank
+-   Build command: `npm run build`
+-   Publish directory: `dist`
+-   Environment variable:
+    `VITE_API_URL=https://ngo-community-wrjs.onrender.com`
+
+### Backend --- Render
+
+-   Repository: `shyambendale/ngo-community`
+-   Branch: `main`
+-   Root directory: `src/server`
+-   Build command: `npm install`
+-   Start command: `npm start`
+
+Configure these backend environment variables in Render: `MONGO_URI`,
+`JWT_SECRET`, and `CLIENT_URL`. Set `CLIENT_URL` to the exact deployed
+Netlify site origin, without a trailing slash. Add the optional
+administrator variables only if you want the backend to bootstrap an
+administrator account.
+
+The backend CORS configuration reads `CLIENT_URL` and supports
+comma-separated origins. After changing backend environment variables,
+save and redeploy the Render service.
+
+## Security Notes
+
+-   Keep `.env` files out of version control.
+-   Use a unique, strong `JWT_SECRET` in production.
+-   Use a strong MongoDB database password.
+-   Do not expose MongoDB credentials, JWT secrets, or administrator
+    credentials in frontend code.
+-   Configure CORS with the actual frontend origin(s), rather than
+    allowing every origin in production.
 
 ## 📱 Features Overview
 
@@ -166,25 +294,6 @@ This frontend is designed to work with the provided Firebase Functions backend. 
 - **Error Handling**: Comprehensive error management
 - **Secure API Calls**: Proper authentication headers
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Connect your GitHub repository
-2. Configure build settings:
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-3. Deploy automatically on push
-
-### Netlify
-1. Connect your repository
-2. Set build command: `npm run build`
-3. Set publish directory: `dist`
-
-### Traditional Hosting
-1. Run `npm run build`
-2. Upload `dist` folder contents to your web server
-3. Configure server for SPA routing
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -195,14 +304,9 @@ This frontend is designed to work with the provided Firebase Functions backend. 
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🆘 Support
-
-For support and questions:
-- Create an issue in the repository
-- Contact the development team
-- Check the documentation
+No license has been specified yet. Unless a license is added to this
+repository, the project is not explicitly offered for reuse,
+modification, or redistribution.
 
 ## 🔮 Future Enhancements
 
